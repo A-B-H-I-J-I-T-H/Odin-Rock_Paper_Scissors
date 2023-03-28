@@ -1,9 +1,25 @@
 let userScore = 0 , computerScore = 0;
-game();
+
+const user = document.querySelector('.user');
+const computer = document.querySelector('.computer');
+const uc = document.querySelector('.uc');
+const cc = document.querySelector('.cc');
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    let id = button.getAttribute('class');
+    button.addEventListener('click', function() {
+        if (id === "rock")
+            game("rock");
+        else if (id === "paper")
+            game("paper");
+        else
+            game("scissors")
+    })
+})
 
 function getComputerChoice () {
     let choice = Math.floor(Math.random() * 3);
-    console.log(choice);
     if (choice === 0)
         return "rock";
     else if (choice === 1)
@@ -12,22 +28,13 @@ function getComputerChoice () {
         return "scissors";
 }
 
-function getUserChoice () {
-    let flag=0 , choice;
-    while (flag===0) {
-        choice = prompt("Enter your choice");
-        choice = choice.toLowerCase();
-        if (choice==="rock"||choice==="paper"||choice==="scissors")
-            flag = 1;
-        else
-            console.log("invalid choice");
-    }
-    return choice;
-}
-
 function playRound (playerSelection,computerSelection) {
     let player = playerSelection;
     let computer = computerSelection;
+
+    uc.textContent = `you chose : ${player}`;
+    cc.textContent = `computer chose : ${computer}`;
+
     if ((player === "rock") && (computer === "scissors")) {
         console.log("you win...rock beats scissors");
         userScore++;
@@ -56,17 +63,17 @@ function playRound (playerSelection,computerSelection) {
         console.log(`It\'s a draw...both chose ${player}`);
 }
 
-function game () {
-    let userChoice , computerChoice;
-    for (let i=0;i<5;++i) {
-        userChoice = getUserChoice();
-        computerChoice = getComputerChoice();
-        playRound(userChoice,computerChoice);
-    }
-    if (userScore > computerScore)
+function game (userChoice) {
+    let computerChoice;
+    computerChoice = getComputerChoice();
+    playRound(userChoice,computerChoice);
+
+    user.textContent = `user score : ${userScore}`;
+    computer.textContent = `computer score : ${computerScore}`;
+
+
+    if (userScore >= 5)
         console.log("you win the game");
-    else if (computerChoice > userScore)
+    else if (computerScore >= 5)
         console.log("computer win the game");
-    else
-        console.log("It's a draw...thankyou for playing");
 }
